@@ -1,6 +1,6 @@
 <template>
   <div class="ui container">
-    <h1 class="centered">Login Form</h1>
+    <h1 class="centered header">Login Form</h1>
     <div class="ui grid center aligned">
       <div class="ten wide column left aligned">
         <form class="ui form" @submit.prevent="login">
@@ -38,6 +38,12 @@
   .ui.container {
     .centered {
       text-align: center;
+    }
+    .header {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      padding: 2rem;
+      font-size: 2.5em;
     }
   }
 </style>

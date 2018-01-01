@@ -1,6 +1,6 @@
 <template>
   <div class="ui container">
-    <h2 class="centered"> Registration Form </h2>
+    <h2 class="centered header"> Registration Form </h2>
     <div class="center aligned ui grid">
       <div class="row">
         <div class="twelve wide column left aligned">
@@ -47,6 +47,12 @@
   .ui.container {
     .centered {
       text-align: center;
+    }
+    .header {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      padding: 2rem;
+      font-size: 2.5em;
     }
   }
 </style>
