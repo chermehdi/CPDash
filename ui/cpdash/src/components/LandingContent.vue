@@ -85,7 +85,7 @@
     padding: 1rem;
     img.image {
       box-shadow: 0 3px 3px rgba(0, 0, 0, 0.12), 0 3px 2px rgba(0, 0, 0, 0.24);
-      border: 1px solid #DDD;
+      border: 2px solid #BA68C8;
     }
   }
 
