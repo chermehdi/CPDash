@@ -11,7 +11,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.macm.cpdash.security.JwtAuthFilter;
+import com.macm.cpdash.security.JwtUtils;
 import com.macm.cpdash.security.UnauthorizedRequest;
 
 @Configuration
@@ -25,49 +28,44 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	/**
-     * Setting BCryptPasswordEncoder as our default PasswordEncoder .
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	 * Setting BCryptPasswordEncoder as our default PasswordEncoder .
+	 */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    /**
-     * Setting the AuthFilter to be used before every auth request (see security config above)
-     */
-    // TODO 
-    /*@Bean
-    public JwtAuthFilter jwtAuthFilter() {
-        return new JwtAuthFilter();
-    }*/
-    
-    // TODO
-    /*
-    @Bean
-    public JwtUtils jwtUtils() {
-        return new JwtUtils();
-    } */
-	
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedRequest)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .anyRequest().permitAll();
+	/**
+	 * Setting the AuthFilter to be used before every auth request (see security
+	 * config above)
+	 */
 
-        // TODO http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+	@Bean
+	public JwtAuthFilter jwtAuthFilter() {
+		return new JwtAuthFilter();
+	}
 
-        http.headers().cacheControl();
-    }
-    
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-    
+	@Bean
+	public JwtUtils jwtUtils() {
+		return new JwtUtils();
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedRequest).and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers("/api/auth/**").permitAll().antMatchers("/api/**").authenticated().anyRequest()
+				.permitAll();
+
+		http.addFilterBefore(jwtAuthFilter(),
+		UsernamePasswordAuthenticationFilter.class);
+
+		http.headers().cacheControl();
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	}
+
 }
