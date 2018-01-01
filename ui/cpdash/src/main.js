@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 import VueResource from 'vue-resource'
+import VueLocalStorage from 'vue-localstorage'
+
 Vue.config.productionTip = false
 
 import 'semantic-ui/dist/semantic.min.css'
@@ -12,6 +14,7 @@ import semantic from 'semantic-ui/dist/semantic.min'
 
 Vue.use(VueResource)
 Vue.use(Vuex)
+Vue.use(VueLocalStorage)
 
 new Vue({
   el: '#app',
