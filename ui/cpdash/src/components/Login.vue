@@ -1,9 +1,13 @@
 <template>
   <div class="ui container">
     <h1 class="centered header">Login Form</h1>
+
     <div class="ui grid center aligned">
       <div class="ten wide column left aligned">
-        <form class="ui form" @submit.prevent="login">
+        <div class="ui message negative" v-if="error">
+          Wrong Credentials, Please try again
+        </div>
+        <form class="ui form" :class="{loading: loading}" @submit.prevent="login">
           <div class="field">
             <label for="email">Your Email : </label>
             <input id="email" v-model="email" type="email" name="email" placeholder="Your Email">
@@ -23,13 +27,33 @@
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        loading: false,
+        error: false
       }
     },
     methods: {
       login() {
-        console.log(this.$localStorage)
-        console.log(this.$http)
+        this.loading = true
+        const authenticationRequest = {
+          email: this.email,
+          password: this.password
+        }
+        this.$http.post('/api/auth/login', authenticationRequest)
+          .then(res => {
+            this.$store.commit('setUser', res.body.user)
+            this.$localStorage.set('_token', res.body.token)
+            this.loading = false
+            this.error = false
+            setTimeout(() => {
+              this.$router.push({path: '/dashboard'})
+            }, 2000)
+          })
+          .catch(e => {
+            this.loading = false
+            this.error = true
+            console.log('error ', e)
+          })
       }
     }
   }

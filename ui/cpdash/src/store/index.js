@@ -5,12 +5,17 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    isLoggedIn: !!localStorage.getItem('_token'),
+    user: {}
   },
   mutations: {
-    increment(state) {
-      state.count++
+    setUser(state, user){
+      state.user = user
+      state.isLoggedIn = true
     }
+  },
+  actions: {},
+  getters: {
   }
 })
 

@@ -3,6 +3,11 @@
     <h2 class="centered header"> Registration Form</h2>
     <div class="center aligned ui grid">
       <div class="row">
+        <div class="ui message positive" v-if="success">
+          Registration Successful please validate your email
+        </div>
+      </div>
+      <div class="row">
         <div class="twelve wide column left aligned">
           <form class="ui form" :class="isSending" @submit.prevent="register">
             <div class="field required">
@@ -39,7 +44,8 @@
         password: '',
         passwordConfirmation: '',
         valid: true,
-        loading: false
+        loading: false,
+        success: false
       }
     },
     methods: {
@@ -48,7 +54,31 @@
           // TODO: display notification
           return
         }
+        let UserObject = {
+          username: this.userName,
+          email: this.email,
+          password: this.password,
+          passwordConfirmation: this.passwordConfirmation
+        }
 
+        this.loading = true
+        this.$http.post('/api/auth/signup', UserObject)
+          .then(res => {
+            this.updateState(res.body)
+            this.loading = false
+            this.success = true
+            setTimeout(() => {
+              this.$router.push({path: '/dashboard'})
+            }, 3000)
+          })
+          .catch((err) => {
+            console.log('an error occurred ! ', err)
+            //TODO: display error
+            this.loading = false
+          })
+      },
+      updateState(body) {
+        console.log('this is the registration body of the user ', body)
       }
     },
     computed: {
@@ -65,7 +95,6 @@
     },
     watch: {
       passwordConfirmation(newValue) {
-        console.log(newValue, this.password)
         if (newValue !== this.password) {
           this.valid = false
         } else {

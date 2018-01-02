@@ -1,0 +1,5 @@
+
+.sidebar[data-background-color="black"] .nav li:not(.active) > a,
+.off-canvas-sidebar[data-background-color="black"] .nav li:not(.active) > a {
+  color: #424242;
+}

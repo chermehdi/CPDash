@@ -5,6 +5,9 @@ import Login from '@/components/Login'
 import Registration from '@/components/Registration'
 import LandingContent from '@/components/LandingContent'
 import isUserAuthenticated from '@/state/auth'
+import Dashboard from '@/pages/dashboard'
+import Sheets from '@/pages/sheets'
+import Profile from '@/pages/profile'
 
 Vue.use(Router)
 
@@ -12,6 +15,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
+      name: 'landing',
       component: Landing,
       children: [
         {
@@ -27,15 +31,38 @@ const router = new Router({
           component: Login
         }
       ]
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard,
+      children: [
+        {
+          path: '',
+          name: 'sheets',
+          redirect: '/dashboard/sheets'
+        },
+        {
+          path: 'sheets',
+          name: 'sheets',
+          component: Sheets
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: Profile
+        }
+      ]
     }
-  ]
+  ],
+  linkActiveClass: 'active'
 })
 
-const protectedRoutes = ['/login', '/dashboard']
+const protectedRoutes = ['/dashboard/*']
+const protectedRegex = new RegExp(protectedRoutes.join('|'), "i")
 
 router.beforeEach((to, from, next) => {
-  if (protectedRoutes.find(a => a.indexOf(to.fullPath) >= 0)) {
-    console.log('hel')
+  if (protectedRegex.test(to.fullPath)) {
     if (isUserAuthenticated()) {
       next()
     } else {

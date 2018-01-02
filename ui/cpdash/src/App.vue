@@ -10,12 +10,23 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   #app {
     font-family: 'Montserrat', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
     height: 100%;
   }
+
+  $primary-color: #AB47BC;
+  .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:not(.btn):hover, .navbar-default .navbar-nav > .active > a:not(.btn):focus, .navbar-default .navbar-nav > li > a:not(.btn):hover, .navbar-default .navbar-nav > li > a:not(.btn):focus {
+    &:hover {
+      color: #AB47BC;
+    }
+    .navbar-default .navbar-nav > .dropdown > a:hover .caret {
+      border-bottom-color: $primary-color;
+      border-bottom-color: $primary-color;
+    }
+  }
+
 </style>
