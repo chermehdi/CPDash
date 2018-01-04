@@ -1,6 +1,7 @@
 package com.macm.cpdash.domain.entities;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,12 +49,12 @@ public class UserEntity {
 	@Column(name = "email")
 	@NotNull
 	private String email;
-	
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "user")
 
-    private ProfileEntity profile;
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+	private ProfileEntity profile;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner")
+	private Set<SheetEntity> sheets = new HashSet<>();
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -158,6 +160,22 @@ public class UserEntity {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
+	public Set<SheetEntity> getSheets() {
+		return sheets;
+	}
+
+	public void setSheets(Set<SheetEntity> sheets) {
+		this.sheets = sheets;
+	}
+
+	public ProfileEntity getProfile() {
+		return profile;
+	}
+
+	public void setProfile(ProfileEntity profile) {
+		this.profile = profile;
+	}
+
 	public Set<AuthorityEntity> getAuthorities() {
 		return authorities;
 	}
@@ -165,7 +183,5 @@ public class UserEntity {
 	public void setAuthorities(Set<AuthorityEntity> authorities) {
 		this.authorities = authorities;
 	}
-	
-	
 
 }
