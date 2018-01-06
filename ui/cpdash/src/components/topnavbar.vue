@@ -16,14 +16,11 @@
             <li><a href="#">Notification 1</a></li>
             <li><a href="#">Notification 2</a></li>
           </drop-down>
-          <li>
-            <a href="#" class="btn-rotate">
-              <i class="ti-settings"></i>
-              <p>
-                Settings
-              </p>
-            </a>
-          </li>
+          <drop-down title="Settings" icon="ti-settings">
+            <li>
+              <router-link to="/logout"> Logout</router-link>
+            </li>
+          </drop-down>
         </ul>
       </div>
     </div>
@@ -67,6 +64,7 @@
   li.dropdown {
     cursor: pointer;
   }
+
   .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
     background-color: $primary-color;
     color: white;

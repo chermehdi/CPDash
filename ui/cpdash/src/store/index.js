@@ -6,17 +6,25 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     isLoggedIn: !!localStorage.getItem('_token'),
-    user: {}
+    user: {},
+    sheets: []
   },
   mutations: {
-    setUser(state, user){
+    setUser(state, user) {
       state.user = user
       state.isLoggedIn = true
+    },
+    logout(state) {
+      state.isLoggedIn = false
+      state.user = {}
+      localStorage.removeItem('_token')
+    },
+    newSheet(state, sheet) {
+      state.sheets.push(sheet)
     }
   },
   actions: {},
-  getters: {
-  }
+  getters: {}
 })
 
 export default store

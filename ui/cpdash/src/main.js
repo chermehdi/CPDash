@@ -18,7 +18,7 @@ import VueLocalStorage from 'vue-localstorage'
 Vue.config.productionTip = false
 
 import 'semantic-ui/dist/semantic.min.css'
-import semantic from 'semantic-ui/dist/semantic.min'
+import semantic from 'semantic-ui/dist/semantic'
 
 Vue.use(SideBar)
 Vue.use(Helpers)

@@ -20,7 +20,7 @@
             </div>
             <div class="field required" :class="validPassword">
               <label for="password">Your Password : </label>
-              <input id="password" v-model="password" type="password" name="password" placeholder="Your Email" required>
+              <input id="password" v-model="password" type="password" name="password" placeholder="Your Password" required>
             </div>
             <div class="field required" :class="validPassword">
               <label for="confirmation">Your Password Confirmation : </label>

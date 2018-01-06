@@ -8,6 +8,7 @@ import isUserAuthenticated from '@/state/auth'
 import Dashboard from '@/pages/dashboard'
 import Sheets from '@/pages/sheets'
 import Profile from '@/pages/profile'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -59,14 +60,29 @@ const router = new Router({
 })
 
 const protectedRoutes = ['/dashboard/*']
+const unprotectedRoutes = ['/login', '/register']
+
 const protectedRegex = new RegExp(protectedRoutes.join('|'), "i")
+const unprotectedRegex = new RegExp(unprotectedRoutes.join('|'), "i")
+const logoutRoute = new RegExp("/logout")
 
 router.beforeEach((to, from, next) => {
+  if (logoutRoute.test(to.fullPath)) {
+    store.commit('logout')
+    next({path: '/'})
+    return
+  }
   if (protectedRegex.test(to.fullPath)) {
     if (isUserAuthenticated()) {
-      next()
+      next();
     } else {
       next({path: '/register'})
+    }
+  } else if (unprotectedRegex.test(to.fullPath)) {
+    if (isUserAuthenticated()) {
+      next({path: '/dashboard'})
+    } else {
+      next()
     }
   } else {
     next()

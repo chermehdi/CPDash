@@ -6,7 +6,25 @@
 
 <script>
   export default {
-    name: 'app'
+    name: 'app',
+    watch: {
+      $route: (from, to) => {
+        //TODO: test for validity of the token here
+      }
+    },
+    mounted() {
+      this.checkState()
+    },
+    methods: {
+      checkState() {
+        if (this.$store.state.isLoggedIn) {
+          if (!this.$store.state.user.email) {
+            // TODO: update the state
+            console.log('should fetch user object')
+          }
+        }
+      }
+    }
   }
 </script>
 
@@ -19,7 +37,11 @@
   }
 
   $primary-color: #AB47BC;
-  .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:not(.btn):hover, .navbar-default .navbar-nav > .active > a:not(.btn):focus, .navbar-default .navbar-nav > li > a:not(.btn):hover, .navbar-default .navbar-nav > li > a:not(.btn):focus {
+  .navbar-default .navbar-nav > .active > a,
+  .navbar-default .navbar-nav > .active > a:not(.btn):hover,
+  .navbar-default .navbar-nav > .active > a:not(.btn):focus,
+  .navbar-default .navbar-nav > li > a:not(.btn):hover,
+  .navbar-default .navbar-nav > li > a:not(.btn):focus {
     &:hover {
       color: #AB47BC;
     }

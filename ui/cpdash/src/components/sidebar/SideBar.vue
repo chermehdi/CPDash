@@ -5,7 +5,7 @@
       <div class="logo">
         <a href="#" class="simple-text">
           <span class="logo-img">
-            <img src="static/img/car.png">
+            <img src="static/img/programming.svg">
           </span>
           CPdash <!-- ADD Logo-->
         </a>

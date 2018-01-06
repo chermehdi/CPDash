@@ -21,12 +21,11 @@
           <li><a>Notification 1</a></li>
           <li><a>Notification 2</a></li>
         </drop-down>
-        <li>
-          <a>
-            <i class="ti-settings"></i>
-            <p>Settings</p>
-          </a>
-        </li>
+
+        <drop-down title="Settings" icon="ti-settings">
+          <li><a>Notification 1</a></li>
+          <li><a>Notification 2</a></li>
+        </drop-down>
         <li class="divider"></li>
       </ul>
     </side-bar>
