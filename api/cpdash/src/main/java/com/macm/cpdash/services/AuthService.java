@@ -18,9 +18,11 @@ import com.macm.cpdash.domain.dto.ErrorResponse;
 import com.macm.cpdash.domain.dto.RegistrationRequest;
 import com.macm.cpdash.domain.dto.TokenResponse;
 import com.macm.cpdash.domain.dto.User;
+import com.macm.cpdash.domain.entities.ProfileEntity;
 import com.macm.cpdash.domain.entities.UserEntity;
 import com.macm.cpdash.domain.factories.SuccessResponse;
 import com.macm.cpdash.domain.factories.UserFactory;
+import com.macm.cpdash.repositories.ProfileRepository;
 import com.macm.cpdash.repositories.UserRepository;
 import com.macm.cpdash.security.JwtUtils;
 import com.macm.cpdash.services.events.OnRegistrationCompleteEvent;
@@ -37,7 +39,10 @@ public class AuthService {
 
 	@Autowired
 	private UserRepository userRepository;
-
+	
+	@Autowired
+	private ProfileRepository profileRepository;
+	
 	@Autowired
 	private JwtUtils jwtUtils;
 
@@ -81,9 +86,19 @@ public class AuthService {
 
 		userEntity = userFactory.from(request);
 		String appUrl = webRequest.getContextPath();
-		userRepository.save(userEntity);
+		userEntity = userRepository.save(userEntity);
+		addDefaultProfile(userEntity);
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(userEntity, webRequest.getLocale(), appUrl));
 		return ResponseEntity.ok(new SuccessResponse(true, "User created Successfully"));
+	}
+
+	private void addDefaultProfile(UserEntity userEntity) {
+		ProfileEntity profileEntity = new ProfileEntity();
+		profileEntity.setUser(userEntity);
+		profileEntity.setPicture("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+		
+		profileRepository.save(profileEntity);
+		userEntity.setProfile(profileEntity);
 	}
 
 }

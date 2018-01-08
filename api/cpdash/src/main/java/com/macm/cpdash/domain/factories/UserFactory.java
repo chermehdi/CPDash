@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.macm.cpdash.domain.dto.RegistrationRequest;
 import com.macm.cpdash.domain.entities.AuthorityEntity;
 import com.macm.cpdash.domain.entities.AuthorityName;
+import com.macm.cpdash.domain.entities.ProfileEntity;
 import com.macm.cpdash.domain.entities.UserEntity;
 import com.macm.cpdash.repositories.AuthorityRepository;
 
@@ -41,10 +42,9 @@ public class UserFactory {
 		current.setUpdateDate(new Date());
 		current.setLastPasswordResetDate(new Date());
 		current.setAuthorities(getAuthorities());
-
 		return current;
 	}
-
+	
 	private Set<AuthorityEntity> getAuthorities() {
 		Set<AuthorityEntity> ret = new TreeSet<>();
 		AuthorityEntity authority = authorityRepository.findByName(AuthorityName.ROLE_USER);
