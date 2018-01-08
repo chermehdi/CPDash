@@ -31,6 +31,12 @@ public class SheetEntity {
 	@Column(name = "sheet_name")
 	private String name;
 
+	@Column(name = "sheet_description")
+	private String description;
+	
+	@Column(name = "sheet_hash")
+	private String sheetHash;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id", nullable = false)
 	private UserEntity owner;
@@ -44,6 +50,26 @@ public class SheetEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "update_date")
 	private Date updateDate;
+	
+	public SheetEntity() {
+		/*Default Constructor*/
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UserEntity getOwner() {
+		return owner;
+	}
+
+	public void setOwner(UserEntity owner) {
+		this.owner = owner;
+	}
 
 	public Long getId() {
 		return id;
@@ -76,5 +102,15 @@ public class SheetEntity {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
+
+	public String getSheetHash() {
+		return sheetHash;
+	}
+
+	public void setSheetHash(String sheetHash) {
+		this.sheetHash = sheetHash;
+	}
+	
+	
 
 }

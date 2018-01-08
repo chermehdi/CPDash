@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.macm.cpdash.domain.dto.RegistrationRequest;
 import com.macm.cpdash.domain.entities.AuthorityEntity;
 import com.macm.cpdash.domain.entities.AuthorityName;
-import com.macm.cpdash.domain.entities.ProfileEntity;
 import com.macm.cpdash.domain.entities.UserEntity;
 import com.macm.cpdash.repositories.AuthorityRepository;
 
