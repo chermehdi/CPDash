@@ -21,6 +21,11 @@
           if (!this.$store.state.user.email) {
             // TODO: update the state
             console.log('should fetch user object')
+            const token = this.$localStorage.get('_token')
+            this.$http.get('/api/users/me', {headers: {'Authorization': `${token}`}})
+              .then(user => {
+                this.$store.commit('setUser', user.body)
+              }).catch(error => console.log('an error happened ', error))
           }
         }
       }

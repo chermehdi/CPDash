@@ -7,7 +7,7 @@
           <span class="logo-img">
             <img src="static/img/programming.svg">
           </span>
-          CPdash <!-- ADD Logo-->
+          CPdash {{ currentUser }}<!-- ADD Logo-->
         </a>
       </div>
       <slot>
@@ -88,6 +88,9 @@
        */
       arrowMovePx() {
         return this.linkHeight * this.activeLinkIndex
+      },
+      currentUser() {
+        return this.$store.state.user.username
       }
     },
     data() {
