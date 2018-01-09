@@ -41,10 +41,9 @@ public class UserFactory {
 		current.setUpdateDate(new Date());
 		current.setLastPasswordResetDate(new Date());
 		current.setAuthorities(getAuthorities());
-
 		return current;
 	}
-
+	
 	private Set<AuthorityEntity> getAuthorities() {
 		Set<AuthorityEntity> ret = new TreeSet<>();
 		AuthorityEntity authority = authorityRepository.findByName(AuthorityName.ROLE_USER);

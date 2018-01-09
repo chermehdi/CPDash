@@ -1,7 +1,8 @@
 package com.macm.cpdash.domain.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -54,7 +55,7 @@ public class UserEntity {
 	private ProfileEntity profile;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "owner")
-	private Set<SheetEntity> sheets = new HashSet<>();
+	private List<SheetEntity> sheets = new ArrayList<>();
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -160,11 +161,13 @@ public class UserEntity {
 		this.lastPasswordResetDate = lastPasswordResetDate;
 	}
 
-	public Set<SheetEntity> getSheets() {
+	public List<SheetEntity> getSheets() {
+		if(sheets == null)
+			return new ArrayList<>();
 		return sheets;
 	}
 
-	public void setSheets(Set<SheetEntity> sheets) {
+	public void setSheets(List<SheetEntity> sheets) {
 		this.sheets = sheets;
 	}
 
