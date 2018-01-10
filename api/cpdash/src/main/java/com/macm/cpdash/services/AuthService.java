@@ -24,6 +24,7 @@ import com.macm.cpdash.domain.factories.SuccessResponse;
 import com.macm.cpdash.domain.factories.UserFactory;
 import com.macm.cpdash.repositories.ProfileRepository;
 import com.macm.cpdash.repositories.UserRepository;
+import com.macm.cpdash.security.JwtUser;
 import com.macm.cpdash.security.JwtUtils;
 import com.macm.cpdash.services.events.OnRegistrationCompleteEvent;
 
@@ -90,6 +91,12 @@ public class AuthService {
 		addDefaultProfile(userEntity);
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(userEntity, webRequest.getLocale(), appUrl));
 		return ResponseEntity.ok(new SuccessResponse(true, "User created Successfully"));
+	}
+	
+	
+	public UserEntity getUserEntityFromAuth(Authentication auth) {
+		JwtUser userDetails = (JwtUser) auth.getPrincipal();
+		return userRepository.findByEmail(userDetails.getEmail());
 	}
 
 	private void addDefaultProfile(UserEntity userEntity) {

@@ -21,7 +21,7 @@ public class Sheet {
 	public Sheet(long id, String name, String description, String hash) {
 		this.id = id;
 		this.name = name;
-		this.description = name;
+		this.description = description;
 		this.hash = hash;
 	}
 
