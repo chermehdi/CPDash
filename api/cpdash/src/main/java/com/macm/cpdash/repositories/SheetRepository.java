@@ -10,5 +10,7 @@ import com.macm.cpdash.domain.entities.SheetEntity;
  *
  */
 public interface SheetRepository extends JpaRepository<SheetEntity, Long> {
+
+	SheetEntity findBySheetHash(String sheetHash);
 	
 }
