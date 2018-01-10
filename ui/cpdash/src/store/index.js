@@ -7,6 +7,8 @@ const store = new Vuex.Store({
   state: {
     isLoggedIn: !!localStorage.getItem('_token'),
     user: {},
+    selectedSheet: 0,
+    selectedProblem: 0,
     sheets: []
   },
   mutations: {
@@ -18,6 +20,12 @@ const store = new Vuex.Store({
       state.isLoggedIn = false
       state.user = {}
       localStorage.removeItem('_token')
+    },
+    selectedSheet(state, index) {
+      state.selectedSheet = index
+    },
+    selectedProblem(state, index) {
+      state.selectedProblem = index
     },
     newSheet(state, sheet) {
       state.sheets.push(sheet)

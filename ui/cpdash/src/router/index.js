@@ -8,6 +8,7 @@ import isUserAuthenticated from '@/state/auth'
 import Dashboard from '@/pages/dashboard'
 import Sheets from '@/pages/sheets'
 import Profile from '@/pages/profile'
+import ProblemDescription from '@/pages/ProblemDescription'
 import store from '@/store'
 
 Vue.use(Router)
@@ -52,6 +53,11 @@ const router = new Router({
           path: 'profile',
           name: 'profile',
           component: Profile
+        },
+        {
+          path: 'problem-description',
+          name: 'problem-description',
+          component: ProblemDescription
         }
       ]
     }

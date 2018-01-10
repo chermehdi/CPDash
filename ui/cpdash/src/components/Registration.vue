@@ -20,7 +20,8 @@
             </div>
             <div class="field required" :class="validPassword">
               <label for="password">Your Password : </label>
-              <input id="password" v-model="password" type="password" name="password" placeholder="Your Password" required>
+              <input id="password" v-model="password" type="password" name="password" placeholder="Your Password"
+                     required>
             </div>
             <div class="field required" :class="validPassword">
               <label for="confirmation">Your Password Confirmation : </label>
@@ -49,7 +50,7 @@
       }
     },
     methods: {
-      register() {
+      async register() {
         if (!this.valid) {
           // TODO: display notification
           return
@@ -62,20 +63,15 @@
         }
 
         this.loading = true
-        this.$http.post('/api/auth/signup', UserObject)
-          .then(res => {
-            this.updateState(res.body)
-            this.loading = false
-            this.success = true
-            setTimeout(() => {
-              this.$router.push({path: '/dashboard'})
-            }, 3000)
-          })
-          .catch((err) => {
-            console.log('an error occurred ! ', err)
-            //TODO: display error
-            this.loading = false
-          })
+        try {
+          const res = await this.$http.post('/api/auth/signup', UserObject)
+          this.updateState(res.body)
+          this.loading = false
+          this.success = true
+        } catch (e) {
+          this.loading = false
+          console.log('an error happened ', e)
+        }
       },
       updateState(body) {
         console.log('this is the registration body of the user ', body)

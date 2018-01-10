@@ -11,14 +11,24 @@
         </div>
       </div>
       <div class="column eleven wide">
-        <transition :before-enter="test" name="show" mode="out-in">
+        <transition name="show" mode="out-in">
           <div class="sheet-details-container" :key="currentSelected.name">
             <div class="details-header">
-              <div class="sheet-name">{{ currentSelected.name }}</div>
-              <div class="sheet-description">{{ currentSelected.description }}</div>
+              <div class="info-container">
+                <div class="sheet-name">{{ currentSelected.name }}</div>
+                <div class="sheet-description">{{ currentSelected.description }}</div>
+              </div>
+              <div class="actions-container">
+                <div @click="removeCurrentSelected" class="remove"><i class="remove circle icon large"></i>
+                </div>
+                <div @click="showProblemListFor" class="more"><i class="angle down icon large"></i>
+                </div>
+              </div>
             </div>
-            <div class="details-content" :key="currentSelected.description">
-
+            <div class="details-content" :key="currentSelected.name">
+              <div class="problem" v-for="(problem, index) in currentSelected.problems">
+                <div class="problem-name" @click="goToProblemDetails(index)">{{ problem.name }}</div>
+              </div>
             </div>
           </div>
         </transition>
@@ -70,14 +80,29 @@
       }
     },
     methods: {
-      test(el) {
-        console.log('before enter', el)
-      },
       createNewSheetForm() {
         $('.ui.modal.small').modal('show')
       },
       addSheet() {
-        this.$store.commit('newSheet', {name: this.sheetName, description: this.sheetDescription})
+        this.$store.commit('newSheet', {
+          name: this.sheetName, description: this.sheetDescription,
+          problems: [
+            {
+              "name": "problem01",
+              "desciption": "desc",
+              "url": "link/to/problem",
+              "dificulty": 1,
+              "tags": ["dp", "graph"]
+            },
+            {
+              "name": "problem02",
+              "desciption": "desc",
+              "url": "link/to/problem",
+              "dificulty": 1,
+              "tags": ["dp", "graph"]
+            }
+          ]
+        })
         this.$store.commit('newSheet', {name: 'test', description: 'this is a topic about testing'})
         this.$store.commit('newSheet', {name: 'bitmasking', description: 'this is a topic about bitmasking'})
         this.clearLocalState()
@@ -89,17 +114,33 @@
       },
       showDetail(index) {
         this.selected = this.$store.state.sheets[index]
+        this.$store.commit('selectedSheet', index)
+      },
+      showProblemListFor() {
+        console.log('showing the current selected problem list ', this.currentSelected)
+      },
+      removeCurrentSelected() {
+        // TODO: should display some kind of modal to the user to confirm the selection
+        console.log('removing the current selected problem list')
+      },
+      goToProblemDetails(index) {
+        console.log('current clicked problem is ', index)
+        this.$store.commit('selectedProblem', index)
+        this.$router.push({path: '/dashboard/problem-description'})
       }
     },
     computed: {
       currentSelected() {
         console.log('mounted ', this.selected)
-        return this.selected
+        const id = this.$store.state.selectedSheet
+        this.selected = this.$store.state.sheets[id]
+        return this.$store.state.sheets[id]
       }
     },
     mounted() {
       $('.ui.accordion').accordion();
       this.sheets = this.$store.state.sheets
+      this.selected = 0
     }
   }
 </script>
@@ -166,6 +207,28 @@
         font-weight: 300;
         font-size: 1.3em;
         padding-left: 0.5rem;
+      }
+    }
+  }
+
+  .more:hover {
+    cursor: pointer;
+
+  }
+
+  .details-header {
+    position: relative;
+    .actions-container {
+      position: absolute;
+      top: 40%;
+      right: 1%;
+      display: flex;
+      .remove {
+        color: red;
+        &:hover {
+          cursor: pointer;
+          transition: all 0.5s ease-in-out;
+        }
       }
     }
   }
