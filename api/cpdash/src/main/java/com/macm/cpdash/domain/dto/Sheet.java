@@ -9,6 +9,16 @@ import com.macm.cpdash.domain.entities.SheetEntity;
  */
 public class Sheet {
 
+	@Override
+	public String toString() {
+		return "Sheet{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", hash='" + hash + '\'' +
+				'}';
+	}
+
 	long id;
 	String name;
 	String description;

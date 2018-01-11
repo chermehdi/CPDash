@@ -28,7 +28,10 @@ const store = new Vuex.Store({
       state.selectedProblem = index
     },
     newSheet(state, sheet) {
-      state.sheets.push(sheet)
+      console.log(state.sheets.indexOf(sheet))
+      if (!state.sheets.find(ele => ele.id === sheet.id)) {
+        state.sheets.push(sheet)
+      }
     }
   },
   actions: {},

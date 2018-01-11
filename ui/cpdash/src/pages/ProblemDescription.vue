@@ -12,8 +12,9 @@
   export default {
     computed: {
       currentProblem() {
+        const sheetId = this.$store.state.selectedSheet
         const id = this.$store.state.selectedProblem
-        return this.$store.state.sheets[id]
+        return this.$store.state.sheets[sheetId].problems[id]
       }
     },
     methods: {

@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.websocket.server.PathParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,9 @@ public class SheetsController {
 	@Autowired
 	private SheetService sheetService;
 
-	@GetMapping(path = "/")
+	Logger log = LoggerFactory.getLogger(getClass());
+
+	@GetMapping
 	public ResponseEntity<List<Sheet>> getAllByUser(Authentication auth) {
 		JwtUser userDetails = (JwtUser) auth.getPrincipal();
 		UserEntity user = userRepository.getOne(userDetails.getId());
@@ -49,14 +53,15 @@ public class SheetsController {
 		return ResponseEntity.ok(new Sheet(sheetRepository.findBySheetHash(sheetHash)));
 	}
 
-	@PostMapping(path = "/")
+	@PostMapping
 	public ResponseEntity<Sheet> create(Authentication auth, @RequestBody Sheet sheet) {
 		Sheet createdSheet = sheetService.create(sheet, auth);
 		// TODO check for successful or failure
+		log.info("hit the create sheet with " + sheet);
 		return ResponseEntity.ok(createdSheet);
 	}
 
-	@PutMapping(path = "/")
+	@PutMapping
 	public ResponseEntity<Sheet> update(Authentication auth, @RequestBody Sheet sheet) {
 		Sheet updatedSheet = sheetService.update(sheet, auth);
 		if (updatedSheet == null)

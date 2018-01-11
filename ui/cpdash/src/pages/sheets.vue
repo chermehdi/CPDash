@@ -83,30 +83,38 @@
       createNewSheetForm() {
         $('.ui.modal.small').modal('show')
       },
-      addSheet() {
-        this.$store.commit('newSheet', {
-          name: this.sheetName, description: this.sheetDescription,
-          problems: [
-            {
-              "name": "problem01",
-              "desciption": "desc",
-              "url": "link/to/problem",
-              "dificulty": 1,
-              "tags": ["dp", "graph"]
-            },
-            {
-              "name": "problem02",
-              "desciption": "desc",
-              "url": "link/to/problem",
-              "dificulty": 1,
-              "tags": ["dp", "graph"]
-            }
-          ]
-        })
-        this.$store.commit('newSheet', {name: 'test', description: 'this is a topic about testing'})
-        this.$store.commit('newSheet', {name: 'bitmasking', description: 'this is a topic about bitmasking'})
-        this.clearLocalState()
-        this.showDetail(0)
+      async addSheet() {
+        try {
+          const newSheet = {
+            name: this.sheetName,
+            description: this.sheetDescription
+          }
+          const token = this.$localStorage.get('_token')
+          const sheet = await this.$http.post('/api/sheets', newSheet, {headers: {'Authorization': `${token}`}})
+          this.$store.commit('newSheet', {
+            ...sheet.body,
+            problems: [
+              {
+                "name": "problem01",
+                "desciption": "desc",
+                "url": "link/to/problem",
+                "dificulty": 1,
+                "tags": ["dp", "graph"]
+              },
+              {
+                "name": "problem02",
+                "desciption": "desc",
+                "url": "link/to/problem",
+                "dificulty": 1,
+                "tags": ["dp", "graph"]
+              }
+            ]
+          })
+          this.clearLocalState()
+          this.showDetail(0)
+        } catch (e) {
+          console.log('an error happened while trying to create the sheet ', e)
+        }
       },
       clearLocalState() {
         this.sheetName = ''
@@ -127,6 +135,37 @@
         console.log('current clicked problem is ', index)
         this.$store.commit('selectedProblem', index)
         this.$router.push({path: '/dashboard/problem-description'})
+      },
+      async fetchUserSheets() {
+        try {
+          const token = this.$localStorage.get('_token')
+          const response = await this.$http.get('/api/sheets', {headers: {'Authorization': `${token}`}})
+          response.body.forEach(sheet => {
+            this.$store.commit('newSheet', {
+              ...sheet,
+              problems: [ // TODO: add sheet's problem
+                {
+                  "name": "problem01",
+                  "desciption": "desc",
+                  "url": "link/to/problem",
+                  "dificulty": 1,
+                  "tags": ["dp", "graph"]
+                },
+                {
+                  "name": "problem02",
+                  "desciption": "desc",
+                  "url": "link/to/problem",
+                  "dificulty": 1,
+                  "tags": ["dp", "graph"]
+                }
+              ]
+            })
+          })
+          this.clearLocalState()
+          this.showDetail(0)
+        } catch (e) {
+          console.log('an error happened while trying to retreive user sheets ', e)
+        }
       }
     },
     computed: {
@@ -141,6 +180,7 @@
       $('.ui.accordion').accordion();
       this.sheets = this.$store.state.sheets
       this.selected = 0
+      this.fetchUserSheets()
     }
   }
 </script>
@@ -230,6 +270,20 @@
           transition: all 0.5s ease-in-out;
         }
       }
+    }
+  }
+
+  .problem {
+    padding: 1rem 0.5rem;
+    @include good-font;
+    box-shadow: 1px 1px #AB47BC, 1px 1px 1px #AB47BC;
+    transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0s, opacity 0.3s ease 0s, height 0s linear 0.35s;
+    border-radius: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    &:hover {
+      cursor: pointer;
+      box-shadow: 1px 5px #cda7d4, 1px 5px 1px #AB47BC;
     }
   }
 
