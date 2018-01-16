@@ -8,5 +8,7 @@ import com.macm.cpdash.domain.entities.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    UserEntity findByEmail(String s);
+	UserEntity findByEmail(String s);
+
+	UserEntity findByUsername(String username);
 }

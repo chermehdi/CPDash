@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.macm.cpdash.domain.dto.Sheet;
 import com.macm.cpdash.domain.entities.SheetEntity;
 import com.macm.cpdash.domain.entities.UserEntity;
+import com.macm.cpdash.errors.UnAuthorizedException;
 import com.macm.cpdash.repositories.SheetRepository;
 
 @Service
@@ -32,13 +33,13 @@ public class SheetService {
 		return new Sheet(sheetEntity);
 	}
 
-	public Sheet update(Sheet sheet, Authentication auth) {
+	public Sheet update(Sheet sheet, Authentication auth) throws UnAuthorizedException {
 		SheetEntity sheetEntity = sheetRepository.findBySheetHash(sheet.getHash());
 		UserEntity userEntity = authService.getUserEntityFromAuth(auth);
 
 		// TODO throw specific exception
 		if (!validateOnwer(sheetEntity, userEntity))
-			return null;
+			throw new UnAuthorizedException("User not allowed to update Sheet!");
 
 		sheetEntity.setName(sheet.getName());
 		sheetEntity.setDescription(sheet.getDescription());
@@ -46,17 +47,16 @@ public class SheetService {
 		sheetRepository.save(sheetEntity);
 		return new Sheet(sheetEntity);
 	}
-	
-	public boolean delete(Sheet sheet, Authentication auth) {
+
+	public void delete(Sheet sheet, Authentication auth) throws UnAuthorizedException {
 		SheetEntity sheetEntity = sheetRepository.findBySheetHash(sheet.getHash());
 		UserEntity userEntity = authService.getUserEntityFromAuth(auth);
-		
+
 		// TODO throw specific exception
 		if (!validateOnwer(sheetEntity, userEntity))
-			return false;
+			throw new UnAuthorizedException("User not allowed to delete Sheet!");
 
 		sheetRepository.delete(sheetEntity);
-		return true;
 	}
 
 	private boolean validateOnwer(SheetEntity sheetEntity, UserEntity userEntity) {

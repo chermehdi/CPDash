@@ -1,7 +1,10 @@
 package com.macm.cpdash.domain.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,93 +27,106 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Table(name = "sheets")
 public class SheetEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Column(name = "sheet_name")
-    private String name;
+	@Column(name = "sheet_name")
+	private String name;
 
-    @Column(name = "sheet_description")
-    private String description;
+	@Column(name = "sheet_description")
+	private String description;
 
-    @Column(name = "sheet_hash")
-    private String sheetHash;
+	@Column(name = "sheet_hash")
+	private String sheetHash;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private UserEntity owner;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner_id", nullable = false)
+	private UserEntity owner;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creation_date")
-    private Date creationDate;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sheet")
+	private List<ProblemEntity> problems;
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "update_date")
-    private Date updateDate;
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "creation_date")
+	private Date creationDate;
 
-    public SheetEntity() {
-        /*Default Constructor*/
-    }
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "update_date")
+	private Date updateDate;
 
-    public String getDescription() {
-        return description;
-    }
+	public SheetEntity() {
+		/* Default Constructor */
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public UserEntity getOwner() {
-        return owner;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setOwner(UserEntity owner) {
-        this.owner = owner;
-    }
+	public UserEntity getOwner() {
+		return owner;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setOwner(UserEntity owner) {
+		this.owner = owner;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
+	public Date getCreationDate() {
+		return creationDate;
+	}
 
-    public Date getUpdateDate() {
-        return updateDate;
-    }
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
+	public Date getUpdateDate() {
+		return updateDate;
+	}
 
-    public String getSheetHash() {
-        return sheetHash;
-    }
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 
-    public void setSheetHash(String sheetHash) {
-        this.sheetHash = sheetHash;
-    }
+	public String getSheetHash() {
+		return sheetHash;
+	}
 
+	public void setSheetHash(String sheetHash) {
+		this.sheetHash = sheetHash;
+	}
+
+	public List<ProblemEntity> getProblems() {
+		if (this.problems == null)
+			return new ArrayList<>();
+
+		return problems;
+	}
+
+	public void setProblems(List<ProblemEntity> problems) {
+		this.problems = problems;
+	}
 
 }

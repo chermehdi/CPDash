@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.macm.cpdash.domain.dto.Sheet;
 import com.macm.cpdash.domain.entities.UserEntity;
+import com.macm.cpdash.errors.UnAuthorizedException;
 import com.macm.cpdash.repositories.SheetRepository;
 import com.macm.cpdash.repositories.UserRepository;
 import com.macm.cpdash.security.JwtUser;
@@ -63,17 +64,21 @@ public class SheetsController {
 
 	@PutMapping
 	public ResponseEntity<Sheet> update(Authentication auth, @RequestBody Sheet sheet) {
-		Sheet updatedSheet = sheetService.update(sheet, auth);
-		if (updatedSheet == null)
+		try {
+			Sheet updatedSheet = sheetService.update(sheet, auth);
+			return ResponseEntity.ok(updatedSheet);
+		} catch (UnAuthorizedException exception) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
-		return ResponseEntity.ok(updatedSheet);
+		}
 	}
 
 	@DeleteMapping(path = "/")
 	public ResponseEntity<Void> delete(Authentication auth, @RequestBody Sheet sheet) {
-		if (!sheetService.delete(sheet, auth))
+		try {
+			sheetService.delete(sheet, auth);
+			return ResponseEntity.ok().build();
+		} catch (UnAuthorizedException exception) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		return ResponseEntity.ok().build();
+		}
 	}
 }
