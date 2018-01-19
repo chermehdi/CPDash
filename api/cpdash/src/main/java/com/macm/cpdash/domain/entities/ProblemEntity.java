@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "problems")
 public class ProblemEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -53,6 +53,14 @@ public class ProblemEntity {
 		this.difficulty = difficulty;
 		this.tags = tags;
 		this.sheet = sheet;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
