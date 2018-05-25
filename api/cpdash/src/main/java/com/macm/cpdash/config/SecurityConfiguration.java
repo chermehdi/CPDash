@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		UsernamePasswordAuthenticationFilter.class);
 
 		http.headers().cacheControl();
+		http.headers().frameOptions().sameOrigin();
 	}
 
 	@Override
