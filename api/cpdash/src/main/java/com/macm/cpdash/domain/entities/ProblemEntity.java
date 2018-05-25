@@ -37,22 +37,17 @@ public class ProblemEntity {
 	@Column(name = "problem_tags")
 	private String tags;
 
-	@ManyToOne
-	@JoinColumn(name = "sheet_id")
-	private SheetEntity sheet;
-
 	public ProblemEntity() {
 		super();
 	}
 
-	public ProblemEntity(String name, String description, String url, int difficulty, String tags, SheetEntity sheet) {
+	public ProblemEntity(String name, String description, String url, int difficulty, String tags) {
 		this();
 		this.name = name;
 		this.description = description;
 		this.url = url;
 		this.difficulty = difficulty;
 		this.tags = tags;
-		this.sheet = sheet;
 	}
 
 	public Long getId() {
@@ -101,14 +96,6 @@ public class ProblemEntity {
 
 	public void setTags(String tags) {
 		this.tags = tags;
-	}
-
-	public SheetEntity getSheet() {
-		return sheet;
-	}
-
-	public void setSheet(SheetEntity sheet) {
-		this.sheet = sheet;
 	}
 
 }

@@ -1,24 +1,11 @@
 package com.macm.cpdash.domain.entities;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.macm.cpdash.domain.dto.Problem;
 import org.hibernate.annotations.CreationTimestamp;
 
 /**
@@ -45,8 +32,9 @@ public class SheetEntity {
 	@JoinColumn(name = "owner_id", nullable = false)
 	private UserEntity owner;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sheet")
-	private List<ProblemEntity> problems;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "sheet_problem", joinColumns = @JoinColumn(name = "sheet_id"), inverseJoinColumns = @JoinColumn(name = "problem_id"))
+	private Set<ProblemEntity> problems;
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -118,15 +106,14 @@ public class SheetEntity {
 		this.sheetHash = sheetHash;
 	}
 
-	public List<ProblemEntity> getProblems() {
-		if (this.problems == null)
-			return new ArrayList<>();
+    public Set<ProblemEntity> getProblems() {
+	    if(this.problems == null)
+	        return new HashSet<>();
 
-		return problems;
-	}
+	    return this.problems;
+    }
 
-	public void setProblems(List<ProblemEntity> problems) {
-		this.problems = problems;
-	}
-
+    public void setProblems(Set<ProblemEntity> problems) {
+        this.problems = problems;
+    }
 }

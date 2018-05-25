@@ -21,13 +21,11 @@ public class Problem {
 
 	private String tags;
 
-	private Sheet sheet;
-
 	public Problem() {
 		super();
 	}
 
-	public Problem(Long id, String name, String description, String url, int difficulty, String tags, Sheet sheet) {
+	public Problem(Long id, String name, String description, String url, int difficulty, String tags) {
 		this();
 		this.id = id;
 		this.name = name;
@@ -35,12 +33,11 @@ public class Problem {
 		this.url = url;
 		this.difficulty = difficulty;
 		this.tags = tags;
-		this.sheet = sheet;
 	}
 
 	public Problem(ProblemEntity problemEntity) {
 		this(problemEntity.getId(), problemEntity.getName(), problemEntity.getDescription(), problemEntity.getUrl(),
-				problemEntity.getDifficulty(), problemEntity.getTags(), new Sheet(problemEntity.getSheet()));
+				problemEntity.getDifficulty(), problemEntity.getTags());
 	}
 
 	public Long getId() {
@@ -91,12 +88,5 @@ public class Problem {
 		this.tags = tags;
 	}
 
-	public Sheet getSheet() {
-		return sheet;
-	}
-
-	public void setSheet(Sheet sheet) {
-		this.sheet = sheet;
-	}
 
 }
